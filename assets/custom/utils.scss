@@ -1,0 +1,22 @@
+@function theme-color($color) {
+  @return map-get($theme-colors, $color);
+}
+
+@mixin header__circle($color) {
+  fill: theme-color($color);
+  transition: fill $transition-speed $transition-function;
+
+  &:hover {
+    fill: darken(theme-color($color), $darken-factor);
+    cursor: pointer;
+  }
+
+  &:active {
+    fill: theme-color($color);
+    cursor: pointer;
+  }
+}
+
+@mixin header__circle--active($color) {
+  fill: darken(theme-color($color), $darken-factor);
+}

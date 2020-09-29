@@ -1,63 +1,84 @@
 <template>
-  <div class="container">
-    <div>
-      <Logo />
-      <h1 class="title">portfolio</h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a>
+  <div>
+    <CustomModal
+      ref="modal"
+      :modal-styles="modalStyles"
+      :modal-header-styles="modalHeaderStyles"
+      visible
+    />
+    <div class="container">
+      <div class="row header__gutter align-items-center header">
+        <div class="col col-md-6">
+          <h2 class="header__subtitle">PAWEŁ KŁAPEĆ</h2>
+          <h1 class="header__title">RUBY ENGINEER</h1>
+          <h3 class="header__quote">
+            Make it work, make it right, make it fast.
+          </h3>
+        </div>
+        <div class="col col-md-6 text-center justify-self-center">
+          <HeaderMenu @menuClick="handleMenuClick" />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+import HeaderMenu from '@/components/HeaderMenu'
+import CustomModal from '@/components/CustomModal'
+import anime from 'animejs/lib/anime.es.js'
+
+export default {
+  components: {
+    HeaderMenu,
+    CustomModal,
+  },
+  data() {
+    return {
+      modalStyles: {
+        left: 0,
+        top: 0,
+        width: 0,
+        height: 0,
+        backgroundColor: 'transparent',
+      },
+      modalHeaderStyles: {
+        backgroundColor: 'transparent',
+      },
+      modalAnimation: null,
+    }
+  },
+  methods: {
+    handleMenuClick(target) {
+      const rect = target.getBoundingClientRect()
+      const backgroundColor = window.getComputedStyle(target).fill
+      this.modalStyles.height = rect.height + 'px'
+      this.modalStyles.width = rect.width + 'px'
+      this.modalStyles.top = rect.top + rect.height / 2 + 'px'
+      this.modalStyles.left = rect.left + rect.width / 2 + 'px'
+      this.modalStyles.backgroundColor = backgroundColor
+      this.modalHeaderStyles.backgroundColor = backgroundColor
+
+      this.revealPage(rect).play()
+    },
+
+    revealPage(rect) {
+      this.modalAnimation = anime({
+        targets: this.$refs.modal.$el,
+        zIndex: 1050,
+        duration: 300,
+        autoplay: false,
+        height: [0, 400],
+        width: [0, 400],
+        backgroundColor: '#FFF',
+        top: [rect.top + rect.height / 2, window.innerHeight / 2 - 200],
+        left: [rect.left + rect.width / 2, window.innerWidth / 2 - 200],
+        borderRadius: ['50%', '4px'],
+        easing: 'cubicBezier(0.4, 0.0, 0.2, 1)',
+      })
+
+      return this.modalAnimation
+    },
+  },
+}
 </script>
-
-<style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
-</style>
