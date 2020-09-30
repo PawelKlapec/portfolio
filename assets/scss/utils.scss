@@ -7,7 +7,7 @@
   transition: fill $transition-speed $transition-function;
 
   &:hover {
-    // fill: darken(theme-color($color), $darken-factor);
+    fill: darken(theme-color($color), $darken-factor);
     cursor: pointer;
   }
 }
