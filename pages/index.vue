@@ -4,7 +4,6 @@
       ref="modal"
       :modal-styles="modalStyles"
       :modal-header-styles="modalHeaderStyles"
-      visible
     />
     <div class="container">
       <div class="row header__gutter align-items-center header">
@@ -35,11 +34,13 @@ export default {
   },
   data() {
     return {
+      modalVisible: false,
       modalStyles: {
         left: 0,
         top: 0,
         width: 0,
         height: 0,
+        display: 'none',
         backgroundColor: 'transparent',
       },
       modalHeaderStyles: {
@@ -57,8 +58,8 @@ export default {
       this.modalStyles.top = rect.top + rect.height / 2 + 'px'
       this.modalStyles.left = rect.left + rect.width / 2 + 'px'
       this.modalStyles.backgroundColor = backgroundColor
+      this.modalStyles.display = 'block'
       this.modalHeaderStyles.backgroundColor = backgroundColor
-
       this.revealPage(rect).play()
     },
 
@@ -66,13 +67,20 @@ export default {
       this.modalAnimation = anime({
         targets: this.$refs.modal.$el,
         zIndex: 1050,
-        duration: 300,
+        duration: 700,
         autoplay: false,
-        height: [0, 400],
-        width: [0, 400],
         backgroundColor: '#FFF',
-        top: [rect.top + rect.height / 2, window.innerHeight / 2 - 200],
-        left: [rect.left + rect.width / 2, window.innerWidth / 2 - 200],
+        keyframes: [
+          {
+            value: 500,
+            top: [rect.top + rect.height / 2, window.innerHeight / 2 - 200],
+            left: [rect.left + rect.width / 2, window.innerWidth / 2 - 200],
+            width: [0, 400],
+            height: [0, 100],
+          },
+          { value: 200, height: [100, 400] },
+        ],
+
         borderRadius: ['50%', '4px'],
         easing: 'cubicBezier(0.4, 0.0, 0.2, 1)',
       })

@@ -16,11 +16,6 @@ export default {
       required: true,
       type: Object,
     },
-    visible: {
-      required: false,
-      type: Boolean,
-      default: false,
-    },
   },
 }
 </script>
