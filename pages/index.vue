@@ -2,10 +2,12 @@
   <div>
     <CustomModal
       ref="modal"
-      :modal-styles="modalStyles"
-      :modal-header-styles="modalHeaderStyles"
-      title="Test"
-    />
+      :styles="modalStyles"
+      :header-styles="modalHeaderStyles"
+      :title="modalTitle"
+      @close-modal="closeModal"
+      ><SkillsCustomModal
+    /></CustomModal>
     <div class="container">
       <div class="row header__gutter align-items-center header">
         <div class="col col-md-6">
@@ -27,14 +29,17 @@
 import anime from 'animejs/lib/anime.es.js'
 
 import findColor from '@/lib/findColor'
+import findTitle from '@/lib/findTitle'
 
 import HeaderMenu from '@/components/HeaderMenu'
 import CustomModal from '@/components/CustomModal'
+import SkillsCustomModal from '@/components/SkillsCustomModal'
 
 export default {
   components: {
     HeaderMenu,
     CustomModal,
+    SkillsCustomModal,
   },
   data() {
     return {
@@ -51,12 +56,16 @@ export default {
         backgroundColor: 'transparent',
       },
       modalAnimation: null,
+      modalTitle: '',
+      modalRect: '',
+      modalRectPosition: null,
     }
   },
   methods: {
     handleMenuClick(event) {
       const rect = event.target.getBoundingClientRect()
       const backgroundColor = findColor(event.target)
+      const title = findTitle(event.target)
 
       this.modalStyles.height = rect.height + 'px'
       this.modalStyles.width = rect.width + 'px'
@@ -64,26 +73,37 @@ export default {
       this.modalStyles.left = rect.left + rect.width / 2 + 'px'
       this.modalStyles.backgroundColor = backgroundColor
       this.modalStyles.display = 'block'
+      this.modalTitle = title
 
       this.modalHeaderStyles.backgroundColor = backgroundColor
 
+      this.modalRect = rect
       this.revealModal(rect).play()
     },
 
-    revealModal(rect) {
+    closeModal() {
+      this.revealModal(this.modalRect, 'reverse').play()
+    },
+
+    revealModal(rect, direction) {
       this.modalAnimation = anime({
         targets: this.$refs.modal.$el,
         zIndex: 1050,
         duration: 700,
         autoplay: false,
-        backgroundColor: '#FFF',
+        direction,
+        backgroundColor: '#423b3d',
         keyframes: [
           {
-            value: 500,
+            value: 300,
+            width: [0, 70],
+            height: [0, 70],
             top: [rect.top + rect.height / 2, window.innerHeight / 2 - 300],
             left: [rect.left + rect.width / 2, window.innerWidth / 2 - 390],
-            width: [0, 760],
-            height: [0, 70],
+          },
+          {
+            value: 200,
+            width: [70, 760],
           },
           { value: 200, height: [70, 570] },
         ],
