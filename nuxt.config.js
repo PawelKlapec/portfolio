@@ -3,7 +3,7 @@ export default {
    ** Nuxt rendering mode
    ** See https://nuxtjs.org/api/configuration-mode
    */
-  mode: 'spa',
+  ssr: false,
   /*
    ** Nuxt target
    ** See https://nuxtjs.org/api/configuration-target
@@ -31,10 +31,7 @@ export default {
    */
   styleResources: {
     scss: [
-      'bootstrap/scss/bootstrap.scss',
-      'bootstrap-vue/src/index.scss',
-      '~/assets/scss//variables.scss',
-      '~/assets/scss//utils.scss',
+      '~/assets/scss/main.scss'
     ],
   },
   css: [],
