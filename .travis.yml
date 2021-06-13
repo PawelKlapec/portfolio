@@ -2,6 +2,10 @@ language: node_js
 node_js:
   - '14'
 
+root:
+  dist: xenial
+  os: linux
+
 cache:
   directories:
     - 'node_modules'
@@ -19,10 +23,10 @@ script:
 
 deploy:
   provider: pages
+  strategy: git
   repo: PawelKlapec/PawelKlapec.github.io
-  skip-cleanup: true
-  github-token: $GITHUB_ACCESS_TOKEN
-  target-branch: master
-  local-dir: build
+  token: $GITHUB_ACCESS_TOKEN
+  target_branch: master
+  local_dir: build
   on:
     branch: master
