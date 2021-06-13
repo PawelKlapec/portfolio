@@ -24,6 +24,7 @@ script:
 deploy:
   provider: pages
   strategy: git
+  skip_cleanup: true
   repo: PawelKlapec/PawelKlapec.github.io
   token: $GITHUB_ACCESS_TOKEN
   target_branch: master
